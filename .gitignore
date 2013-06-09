@@ -3,3 +3,6 @@ dist
 .tmp
 .sass-cache
 app/components
+gas-github.sublime-workspace
+gas-github.sublime-project
+*~
