@@ -25,7 +25,7 @@ do(global=@)->
 	        
 	    isFollowing : (fromUserId , targetUserId)->
 	        req = @request('get' ,"/users/#{formUserId}/following/#{targetUserId}", null , true) 
-	        return req.getResponceCode is 204
+	        return req.getResponceCode() is 204
 	        
 	    getKeys:(userId)->
 	        req = @request('get' ,"/users/#{userId}/keys") 
@@ -87,7 +87,7 @@ do(global=@)->
 	        
 	    isFollowing:(userId)->
 	        req = @request('get' ,"/user/following/#{userId}", null , true) 
-	        return req.getResponceCode is 204
+	        return req.getResponceCode() is 204
 	        
 	    addFollow:(userId)->
 	    	req = @request('put' ,"/user/following/#{userId}") 

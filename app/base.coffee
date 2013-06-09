@@ -59,7 +59,7 @@ do(global=@)->
                 headers : headers
                 muteHttpExceptions : muteHttpExceptions
                 
-            payload? && option.payload = payload
-                
+            (payload? && Object.keys(payload).length > 0) && option.payload = JSON.stringify(payload)
+            Logger.log option
             return UrlFetchApp.fetch(url, option)
     global.ApiBase = ApiBase
