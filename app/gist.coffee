@@ -52,7 +52,6 @@ do(global=@)->
 			super(accessToken)
 			@[k] = v for k, v of object
 			for k, v of @files
-				Logger.log v 
 				v.getContent = ()->
 					return v.content if v.content ?
 					content = UrlFetchApp.fetch(v.row_url).getContentText()
@@ -71,5 +70,23 @@ do(global=@)->
 		del:()->
 			new GistsApi(@accessToken).del(@id)
 		update:()->
+
+			object = "description": @description
+				"files" : {}
+
+			object.files[k] = v for k, v of @files when v.content
+
+			result = new GistsApi(@accessToken).update(@id, object)
+			@[k] = v for k, v of result
+			for k, v of @files
+				v.getContent = ()->
+					return v.content if v.content ?
+					content = UrlFetchApp.fetch(v.row_url).getContentText()
+					v["content"] = content
+					return content
+				@files[k] = v
+
+
+
 
 
