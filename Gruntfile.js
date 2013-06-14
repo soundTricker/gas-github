@@ -10,7 +10,8 @@ module.exports = function (grunt) {
   // configurable paths
   var gasgitHubconfig = {
     app: 'app',
-    dist: 'dist'
+    dist: 'dist',
+    test: 'test'
   };
   try {
     gasgitHubconfig.app = require('./component.json').appPath || gasgitHubconfig.app;
@@ -30,6 +31,16 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
+            '<%= gasgithub.dist %>/*',
+            '!<%= gasgithub.dist %>/.git*'
+          ]
+        }]
+      },
+      test: {
+        files: [{
+          dot: true,
+          src: [
+            '.testtmp',
             '<%= gasgithub.dist %>/*',
             '!<%= gasgithub.dist %>/.git*'
           ]
@@ -55,6 +66,15 @@ module.exports = function (grunt) {
           dest: '.tmp',
           ext: '.js'
         }]
+      },
+      test: {
+        files: [{
+          expand: true,
+          cwd: '<%= gasgithub.test %>/',
+          src: '{,*/}*.coffee',
+          dest: '.testtmp',
+          ext: '.js'
+        }]
       }
     },
     concat: {
@@ -63,6 +83,14 @@ module.exports = function (grunt) {
           '<%= gasgithub.dist %>/scripts.js': [
             '.tmp/{,*/}*.js',
             '<%= gasgithub.app %>/{,*/}*.js'
+          ]
+        }
+      },
+      test:{
+        files: {
+          '<%= gasgithub.dist %>/specs.js': [
+            '.testtmp/{,*/}*.js',
+            '<%= gasgithub.test %>/{,*/}*.js'
           ]
         }
       }
@@ -100,8 +128,12 @@ module.exports = function (grunt) {
     'clean:dist',
     'coffee',
     'concat',
-    'copy',
-    'uglify'
+    'copy'
+  ]);
+  grunt.registerTask('test', [
+    'clean:test',
+    'coffee:test',
+    'concat:test'
   ]);
 
   grunt.registerTask('default', ['build']);
