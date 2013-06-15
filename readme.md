@@ -24,6 +24,18 @@ If you need to use code assist of api, please load below libraries.
     * `M9xRChQrhBh3kyhie4m_XiAV62A3znfOO`
     * Code : https://script.google.com/macros/d/M9xRChQrhBh3kyhie4m_XiAV62A3znfOO/edit
 
+# Sample code
+
+Please see this library's test code or specs.
+
+* Test Codes
+    * https://script.google.com/d/1AvZaI15JqzE8RNBfNm4u1Uyer7QAiCJfr06EVugDEHpmyB5H1rudZF4O/edit
+* Specs
+    * See test directory of this repository
+
+
+
+
 # Implemented GitHub APIs
 
 * Gists: 100%
