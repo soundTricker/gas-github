@@ -19,8 +19,10 @@ If you need to use code assist of api, please load below libraries.
 
 * UsersApi
     * `MoWrIjH3EclR8IpuRiDObf-Mffa6w-w2J`
+    * Code : https://script.google.com/d/1B5-6lP2f0-EA69OzVMtH6Jx-h5I2-oVLmK-7lRHLHIE4jj7Mn4oOz0E-/edit
 * AuthenticatedGithubUser
     * `M9xRChQrhBh3kyhie4m_XiAV62A3znfOO`
+    * Code : https://script.google.com/macros/d/M9xRChQrhBh3kyhie4m_XiAV62A3znfOO/edit
 
 # Implemented GitHub APIs
 
