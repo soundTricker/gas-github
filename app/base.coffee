@@ -35,31 +35,45 @@ do(global=@)->
             
         request : (method , endPoint , params={} , muteHttpExceptions=false)=>
             
-            endPoint = endPoint.replace(":#{k}" , v) for k,v of params 
             headers = {}
-            headers[k] = v for k,v of params when /^header-/.test(k)
+            headers[k.replace(/^header-/, "")] = v for k,v of params when /^header-/.test(k)
             
             if @accessToken?
                 headers.Authorization = "token #{@accessToken}"
             
+            option = 
+                method : method
+                headers : headers
+                muteHttpExceptions : muteHttpExceptions
+
             payload = null
             if method.toLowerCase() is 'get'
                 if endPoint.indexOf('?') != -1 then endPoint += '&' else endPoint += '?' 
                 for k,v of params when not /^header-/.test(k)
                     endPoint += "#{k}=#{v}&"
             else
-                payload = {}
-                for k,v of params when not /^header-/.test(k)
-                    payload[k] =  v
+                payload = null
+
+                if typeof params == 'string'
+                    payload = params
+                else if Array.isArray(params)
+                    payload = JSON.stringify(params)
+                else
+                    tmpPayload = {}
+                    for k,v of params when not /^header-/.test(k)
+                        tmpPayload[k] =  v
+                    if Object.keys(tmpPayload).length > 0 then payload = JSON.stringify(tmpPayload)
+
+                payload? && option.payload = payload
             
             url = baseUrl + endPoint;
             
-            option = 
-                method : method
-                headers : headers
-                muteHttpExceptions : muteHttpExceptions
+
                 
-            (payload? && Object.keys(payload).length > 0) && option.payload = JSON.stringify(payload)
-            Logger.log option
-            return UrlFetchApp.fetch(url, option)
+
+            
+            @lastResponse = UrlFetchApp.fetch(url, option)
+            return @lastResponse
+        getLastResponse : ()-> @lastResponse
+
     global.ApiBase = ApiBase

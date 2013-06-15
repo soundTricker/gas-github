@@ -1,6 +1,8 @@
 node_modules
 dist
 .tmp
+.testtmp
+.testtmp/*
 .sass-cache
 app/components
 gas-github.sublime-workspace

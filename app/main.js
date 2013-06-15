@@ -10,9 +10,18 @@ function create(apiKey) {
 }
 
 /**
- * Get users API Instance.
- * @return {UsersApi} Users Api Instance
+ * Get Users API Instance.
+ * @return {GithubUsersApi} Users Api Instance
  */
 function users(){
   throw new Error("it's a mock function for code assitant, please run this by created instance by create function.");
 }
+
+/**
+ * Get Gists API Instance.
+ * @return {GithubGistsApi} Gists Api Instance
+ */
+function gists(){
+  throw new Error("it's a mock function for code assitant, please run this by created instance by create function.");
+}
+

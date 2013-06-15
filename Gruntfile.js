@@ -81,7 +81,8 @@ module.exports = function (grunt) {
       dist: {
         files: {
           '<%= gasgithub.dist %>/scripts.js': [
-            '.tmp/{,*/}*.js',
+            '.tmp/*.js',
+            '.tmp/*/*.js',
             '<%= gasgithub.app %>/{,*/}*.js'
           ]
         }
