@@ -24,6 +24,9 @@ do(global=@)->
 
         gists:()=>
             new GistsApi @accessToken
+            
+        activity:()=>
+            new ActivityApi @accessToken
 
     global.Github = Github
 

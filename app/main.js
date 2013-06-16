@@ -25,3 +25,20 @@ function gists(){
   throw new Error("it's a mock function for code assitant, please run this by created instance by create function.");
 }
 
+/**
+ * Get Activity API Instance
+ * @return {GithubActivityApi} Activity Api Instance
+ */
+function activity() {
+  throw new Error("it's a mock function for code assitant, please run this by created instance by create function.");
+}
+
+/**
+ * Get Notification API Instance
+ * @return {GithubNotificationApi} Notification Api Instance
+ */
+function notifications() {
+  throw new Error("it's a mock function for code assitant, please run this by created instance by create function.");
+}
+
+
