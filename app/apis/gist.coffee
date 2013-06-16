@@ -3,28 +3,28 @@ do(global=@)->
     class GistsApi extends ApiBase
         constructor:(accessToken)->
             super(accessToken)
-        mine:(optSince)->
-            req = @request('get' , '/gists', if optSince then 'since' : optSince else null)
+        mine:(options)->
+            req = @request('get' , '/gists', if options then options else null)
             gists = JSON.parse(req.getContentText())
             return (new Gist(@accessToken , g) for g in gists)
-        starred:(optSince)->
-            req = @request('get' , '/gists/starred', if optSince then 'since' : optSince else null)
+        starred:(options)->
+            req = @request('get' , '/gists/starred', if options then options else null)
             gists = JSON.parse(req.getContentText())
             return (new Gist(@accessToken , g) for g in gists)
-        user:(userId,optSince)->
-            req = @request('get' , "/users/#{userId}/gists", if optSince then 'since' : optSince else null)
+        user:(userLogin,options)->
+            req = @request('get' , "/users/#{userLogin}/gists", if options then options else null)
             gists = JSON.parse(req.getContentText())
             return (new Gist(@accessToken , g) for g in gists)
-        public:(optSince)->
-            req = @request('get', "/gists/public", if optSince then 'since' : optSince else null)
+        public:(options)->
+            req = @request('get', "/gists/public", if options then options else null)
             gists = JSON.parse(req.getContentText())
             return (new Gist(@accessToken , g) for g in gists)
         get:(gistId)->
-            req = @request('get', "/gists/#{gistId}", if optSince then 'since' : optSince else null)
+            req = @request('get', "/gists/#{gistId}")
             gist = JSON.parse(req.getContentText())
             return new Gist(@accessToken , gist)
-        create:(input)->
-            req = @request('post', "/gists" , input)
+        create:(description, publicGist, files)->
+            req = @request('post', "/gists" , {description : description, public : publicGist , files : files})
             gist = JSON.parse(req.getContentText())
             return new Gist(@accessToken, gist)
 
@@ -39,7 +39,10 @@ do(global=@)->
             req = @request('delete' , "/gists/#{gistId}/star")
         isStarred:(gistId)->
             req = @request('get' , "/gists/#{gistId}/star" , null, true)
-            return req.getResponceCode() is 204
+            if req.getResponseCode?
+                return req.getResponseCode() is 204
+            else
+                return false
         fork:(gistId)->
             req = @request('get' , "/gists/#{gistId}/forks")
             gist = JSON.parse(req.getContentText())

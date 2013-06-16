@@ -147,45 +147,45 @@ describe "The UsersApi class", ()->
                         expect(following.length).toBeLessThan(me.following)
                     else
                         expect(following.length).toBe(me.following - 30)
-            describe "The 'isFollowing' method", ()->
+            # describe "The 'isFollowing' method", ()->
 
-                following = null
-                beforeEach ()->
-                    following = me.getFollowing()
+            #     following = null
+            #     beforeEach ()->
+            #         following = me.getFollowing()
 
-                it "should return boolean", ()->
-                    expect(me.isFollowing(following[0].login)).toBe(true)
+            #     it "should return boolean", ()->
+            #         expect(me.isFollowing(following[0].login)).toBe(true)
 
-                it "should return false , if unfollow user",()->
-                    expect(me.isFollowing("mojombo")).toBe(false)
+            #     it "should return false , if unfollow user",()->
+            #         expect(me.isFollowing("mojombo")).toBe(false)
 
-            describe "The 'addFollow'", ()->
+            # describe "The 'addFollow'", ()->
 
-                beforeEach ()->
-                    me.addFollow("mojombo")
+            #     beforeEach ()->
+            #         me.addFollow("mojombo")
 
-                it "should be add following", ()->
-                    expect(me.isFollowing("mojombo")).toBe(true)
+            #     it "should be add following", ()->
+            #         expect(me.isFollowing("mojombo")).toBe(true)
 
-                afterEach ()->
-                    me.unFollow("mojombo")
+            #     afterEach ()->
+            #         me.unFollow("mojombo")
 
-            describe "The 'unFollow' method", ()->
+            # describe "The 'unFollow' method", ()->
 
-                beforeEach ()->
-                    me.addFollow("mojombo")
-                    me.unFollow("mojombo")
+            #     beforeEach ()->
+            #         me.addFollow("mojombo")
+            #         me.unFollow("mojombo")
 
-                it "should delete following", ()->
-                    expect(me.isFollowing("mojombo")).toBe(false)
+            #     it "should delete following", ()->
+            #         expect(me.isFollowing("mojombo")).toBe(false)
 
-            describe "The 'getKeys' method", ()->
-                keys = null
-                beforeEach ()->
-                    keys = me.getKeys()
+            # describe "The 'getKeys' method", ()->
+            #     keys = null
+            #     beforeEach ()->
+            #         keys = me.getKeys()
 
-                it "should contain api key",()->
-                    expect(keys).toContain apiKey
+            #     it "should contain api key",()->
+            #         expect(keys).toContain apiKey
 
 
             # Right now(2013/06/15), google apps script does not support 'patch' method, see https://code.google.com/p/google-apps-script-issues/issues/detail?can=2&start=0&num=100&q=urlfetchapp%20patch&colspec=Stars%20Opened%20ID%20Type%20Status%20Summary%20Component%20Owner&groupby=&sort=&id=1224
@@ -263,5 +263,123 @@ describe "The UsersApi class", ()->
             expect(usersApi.request.calls[1].args[1]).toEqual('/users')
             expect(usersApi.request.calls[1].args[2]).toEqual({since: list[list.length - 1].id})
 
+
+    # describe "The 'isFollowing' method", ()->
+    #     me = null
+    #     user = null
+    #     beforeEach ()->
+    #         me = usersApi.me()
+    #         user = me.getFollowing()[0]
+    #         me.unFollow("mojombo")
+
+    #     it "should be true, if user is following", ()->
+    #         expect(usersApi.isFollowing(me.login, user.login)).toBe(true)
+
+    #     it "should be false, it user is not following ", ()->
+    #         expect(usersAPi.isFollowing(me.login, "mojombo")).toBe(false)
+
     describe "The 'get' method", ()->
+        user = null
+        beforeEach ()->
+            user = usersApi.get(421752)
+
+        it "should get user" , ()->
+            expect(user.login).toEqual("soundTricker")
+
+        describe "The GithubUser class", ()->
+            me = null
+
+            beforeEach ()->
+                me = usersApi.get(421752)
+            
+            it "should have accessToken", ()->
+                expect(me.accessToken).toBe(apiKey)
+
+            describe "The 'getFollowers' method",()->
+                followers = null
+                beforeEach ()->
+                    followers = me.getFollowers()
+
+                it "should return Array", ()->
+                    expect(Array.isArray(followers)).toBe(true)
+
+                it "should return same count Array as me.followers", ()->
+                    if me.followers > 30
+                        expect(followers.length).toBeLessThan(me.followers)
+                    else
+                        expect(followers.length).toBe(me.followers)
+
+                it "should support per_page parameter", ()->
+                    return if me.followers <= 30
+
+                    followers = me.getFollowers({per_page : 100})
+
+                    if me.followers > 100
+                        expect(followers.length).toBeLessThan(me.followers)
+                    else
+                        expect(followers.length).toBe(me.followers)
+                it "should support page parameter", ()->
+                    return if me.followers <= 30
+
+                    followers = me.getFollowers({page : 2})
+
+                    if me.followers > 60
+                        expect(followers.length).toBeLessThan(me.followers)
+                    else
+                        expect(followers.length).toBe(me.followers - 30)
+
+            describe "The 'getFollowing' method",()->
+                following = null
+                beforeEach ()->
+                    following = me.getFollowing()
+
+                it "should return Array", ()->
+                    expect(Array.isArray(following)).toBe(true)
+
+                it "should return same count Array as me.following", ()->
+                    if me.following > 30
+                        expect(following.length).toBeLessThan(me.following)
+                    else
+                        expect(following.length).toBe(me.following)
+
+                it "should support per_page parameter", ()->
+                    return if me.following <= 30
+
+                    following = me.getFollowing(per_page : 100)
+
+                    if me.following > 100
+                        expect(following.length).toBeLessThan(me.following)
+                    else
+                        expect(following.length).toBe(me.following)
+
+                it "should support page parameter", ()->
+                    return if me.following <= 30
+
+                    following = me.getFollowing(page : 2)
+
+                    if me.following > 100
+                        expect(following.length).toBeLessThan(me.following)
+                    else
+                        expect(following.length).toBe(me.following - 30)
+            # describe "The 'isFollowing' method", ()->
+
+            #     following = null
+            #     beforeEach ()->
+            #         following = me.getFollowing()
+            #         usersApi.me().unFollow("mojombo")
+
+            #     it "should return boolean", ()->
+            #         expect(me.isFollowing(following[0].login)).toBe(true)
+
+            #     it "should return false , if unfollow user",()->
+            #         expect(me.isFollowing("mojombo")).toBe(false)
+
+            # describe "The 'getKeys' method", ()->
+            #     keys = null
+            #     beforeEach ()->
+            #         keys = me.getKeys()
+
+            #     it "should contain api key",()->
+            #         expect(keys).toContain apiKey
+
 

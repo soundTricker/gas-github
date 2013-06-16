@@ -23,7 +23,12 @@ module.exports = function (grunt) {
       coffee: {
         files: ['<%= gasgithub.app %>/{,*/}*.coffee'],
         tasks: ['coffee:dist']
+      },
+      test: {
+        files: ['<%= gasgithub.test %>/{,*/}*.coffee'],
+        tasks: ['coffee:test']
       }
+
     },
     clean: {
       dist: {

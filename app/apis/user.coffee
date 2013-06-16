@@ -43,20 +43,20 @@ do(global=@)->
             @[k] = v for k, v of object
             
         getFollowers:(optPaging)->
-            req = @request('get' , "/users/#{@id}/followers", optPaging)
+            req = @request('get' , "/users/#{@login}/followers", optPaging)
             users = JSON.parse(req.getContentText())
             return (new GithubUser(@accessToken , u) for u in users)
             
         getFollowing:(optPaging)->
-            req = @request('get' , "/users/#{@id}/following", optPaging)
+            req = @request('get' , "/users/#{@login}/following", optPaging)
             users = JSON.parse(req.getContentText())
             return (new GithubUser(@accessToken , u) for u in users)
             
         isFollowing: (userLogin)->
-            new UserApi(@accessToken).isFollowing(@id, userLogin)
+            new UsersApi(@accessToken).isFollowing(@login, userLogin)
         
         getKeys:()->
-            new UserApi(@accessToken).getKeys(@id)
+            new UsersApi(@accessToken).getKeys(@login)
             
     class AuthenticatedGithubUser extends GithubUser
         constructor:(accessToken, object)-> super(accessToken , object)
