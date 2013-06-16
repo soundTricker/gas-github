@@ -57,7 +57,7 @@ Please see this library's test code or specs.
 * Pull Requests: 0%
 * Repos: 0%
 * Users: 100% (some method can not implement)
-* Events: 0%
+* Events: 100%
 * Search: 0%
 * Markdown: 0%
 
