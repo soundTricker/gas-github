@@ -42,18 +42,18 @@ do(global=@)->
             super(accessToken)
             @[k] = v for k, v of object
             
-        getFollowers:()->
-            req = @request('get' , "/users/#{@id}/followers")
+        getFollowers:(optPaging)->
+            req = @request('get' , "/users/#{@id}/followers", optPaging)
             users = JSON.parse(req.getContentText())
             return (new GithubUser(@accessToken , u) for u in users)
             
-        getFollowing:()->
-            req = @request('get' , "/users/#{@id}/following")
+        getFollowing:(optPaging)->
+            req = @request('get' , "/users/#{@id}/following", optPaging)
             users = JSON.parse(req.getContentText())
             return (new GithubUser(@accessToken , u) for u in users)
             
-        isFollowing: (userId)->
-            new UserApi(@accessToken).isFollowing(@id, userId)
+        isFollowing: (userLogin)->
+            new UserApi(@accessToken).isFollowing(@id, userLogin)
         
         getKeys:()->
             new UserApi(@accessToken).getKeys(@id)
