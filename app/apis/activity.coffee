@@ -12,9 +12,6 @@ do(global=@)->
         issueEvents:(userLogin, repoName, options)->
             req = @request("get", "/repos/#{userLogin}/#{repoName}/issues/events", if options? options else null)
             return JSON.parse(req.getContentText())
-        issueEvents:(userLogin, repoName, options)->
-            req = @request("get", "/repos/#{userLogin}/#{repoName}/issues/events", if options? options else null)
-            return JSON.parse(req.getContentText())
         networkEvents:(userLogin, repoName, options)->
             req = @request("get", "/networks/#{userLogin}/#{repoName}/events", if options? options else null)
             return JSON.parse(req.getContentText())
