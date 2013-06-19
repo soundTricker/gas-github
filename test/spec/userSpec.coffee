@@ -188,52 +188,56 @@ describe "The UsersApi class", ()->
             #         expect(keys).toContain apiKey
 
 
-            # Right now(2013/06/15), google apps script does not support 'patch' method, see https://code.google.com/p/google-apps-script-issues/issues/detail?can=2&start=0&num=100&q=urlfetchapp%20patch&colspec=Stars%20Opened%20ID%20Type%20Status%20Summary%20Component%20Owner&groupby=&sort=&id=1224
-            # describe "The 'update' method", ()->
+            describe "The 'update' method", ()->
 
-            #     origin = null
-            #     updated = null
-            #     beforeEach ()->
-            #         origin = 
-            #             name : me.name
-            #             email : me.email
-            #             bio : me.bio
-            #             company : me.company
-            #             location : me.location
-            #             hireable : me.hireable
-            #             blog : me.blog
-            #         Logger.log(origin)
+                origin = null
+                updated = null
+                beforeEach ()->
+                    origin = 
+                        name : me.name
+                        email : me.email
+                        bio : me.bio
+                        company : me.company
+                        location : me.location
+                        hireable : me.hireable
+                        blog : me.blog
+                    Logger.log(origin)
 
-            #         me.update(
-            #             name : origin.name + " updated"
-            #             email : "keisuke.oohashi+test@gmail.com"
-            #             bio : origin.bio + " updated"
-            #             company : origin.company + " updated"
-            #             location : me.locatoin + " updated"
-            #             hireable : !me.hireable
-            #             blog : me.blog + " updated"
-            #         )
-            #         updated = usersApi.me()
+                    me.update(
+                        name : origin.name + " updated"
+                        email : "keisuke.oohashi+test@gmail.com"
+                        bio : origin.bio + " updated"
+                        company : origin.company + " updated"
+                        location : me.locatoin + " updated"
+                        hireable : !me.hireable
+                        blog : me.blog + " updated"
+                    )
+                    updated = usersApi.me()
 
-            #     afterEach ()->
-            #         me.update origin
+                afterEach ()->
+                    me.update origin
+                    @
 
-            #     it "should update instance" , ()->
-            #         expect(me.name).toEqual origin.name + " updated"
-            #         expect(me.email).toEqual "keisuke.oohashi+test@gmail.com"
-            #         expect(me.bio).toEqual origin.bio + " updated"
-            #         expect(me.company).toEqual origin.company + " updated"
-            #         expect(me.location).toEqual origin.location + " updated"
-            #         expect(me.hireable).toBe(!origin.hireable)
-            #         expect(me.blog).toEqual origin.blog + " updated"
-                # it "should update github data", ()->
-                #     expect(updated.name).toEqual origin.name + " updated"
-                #     expect(updated.email).toEqual "keisuke.oohashi+test@gmail.com"
-                #     expect(updated.bio).toEqual origin.bio + " updated"
-                #     expect(updated.company).toEqual origin.company + " updated"
-                #     expect(updated.location).toEqual origin.location + " updated"
-                #     expect(updated.hireable).toBe(!origin.hireable)
-                #     expect(updated.blog).toEqual origin.blog + " updated"
+                it "should update instance" , ()->
+                    expect(me.name).toEqual origin.name + " updated"
+                    expect(me.email).toEqual "keisuke.oohashi+test@gmail.com"
+                    expect(me.bio).toEqual origin.bio + " updated"
+                    expect(me.company).toEqual origin.company + " updated"
+                    expect(me.location).toEqual origin.location + " updated"
+                    expect(me.hireable).toBe(!origin.hireable)
+                    expect(me.blog).toEqual origin.blog + " updated"
+                    @
+
+                it "should update github data", ()->
+                    expect(updated.name).toEqual origin.name + " updated"
+                    expect(updated.email).toEqual "keisuke.oohashi+test@gmail.com"
+                    expect(updated.bio).toEqual origin.bio + " updated"
+                    expect(updated.company).toEqual origin.company + " updated"
+                    expect(updated.location).toEqual origin.location + " updated"
+                    expect(updated.hireable).toBe(!origin.hireable)
+                    expect(updated.blog).toEqual origin.blog + " updated"
+                    @
+                @
 
 
 

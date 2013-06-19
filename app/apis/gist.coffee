@@ -27,12 +27,10 @@ do(global=@)->
             req = @request('post', "/gists" , {description : description, public : publicGist , files : files})
             gist = JSON.parse(req.getContentText())
             return new Gist(@accessToken, gist)
-
-        # Right now(2013/06/15), google apps script does not support 'patch' method, see https://code.google.com/p/google-apps-script-issues/issues/detail?can=2&start=0&num=100&q=urlfetchapp%20patch&colspec=Stars%20Opened%20ID%20Type%20Status%20Summary%20Component%20Owner&groupby=&sort=&id=1224
-        # update:(gistId , input)->
-        #     req = @request('patch', "/gists/#{gistId}" , input)
-        #     gist = JSON.parse(req.getContentText())
-        #     return new Gist(@accessToken, gist)
+        update:(gistId , description, files)->
+            req = @request('post', "/gists/#{gistId}" , {description : description, files : files})
+            gist = JSON.parse(req.getContentText())
+            return new Gist(@accessToken, gist)
         setStar:(gistId)->
             req = @request('put' , "/gists/#{gistId}/star")
         unStar:(gistId)->
@@ -58,11 +56,9 @@ do(global=@)->
         addComment:(gistId, comment)->
             req = @request('post', "/gists/#{gistId}/comments", body : comment)
             JSON.parse(req.getContentText())
-            
-        # Right now(2013/06/15), google apps script does not support 'patch' method, see https://code.google.com/p/google-apps-script-issues/issues/detail?can=2&start=0&num=100&q=urlfetchapp%20patch&colspec=Stars%20Opened%20ID%20Type%20Status%20Summary%20Component%20Owner&groupby=&sort=&id=1224
-        # editComment:(gistId, commentId, comment)->
-        #     req = @request('patch', "/gists/#{gistId}/comments/#{commentId}", body : comment)
-        #     JSON.parse(req.getContentText())
+        editComment:(gistId, commentId, comment)->
+            req = @request('post', "/gists/#{gistId}/comments/#{commentId}", body : comment)
+            JSON.parse(req.getContentText())
         deleteComment:(gistId, commentId)->
             req = @request('delete', "/gists/#{gistId}/comments/#{commentId}")
 
@@ -91,22 +87,8 @@ do(global=@)->
             @api.fork(@id)
         del:()->
             @api.del(@id)
-        update:()->
-
-            object = "description": @description
-                "files" : {}
-
-            object.files[k] = v for k, v of @files when v.content
-
-            result = @api.update(@id, object)
-            @[k] = v for k, v of result
-            for k, v of @files
-                v.getContent = ()->
-                    return v.content if v.content ?
-                    content = UrlFetchApp.fetch(v.row_url).getContentText()
-                    v["content"] = content
-                    return content
-                @files[k] = v
+        update:(description, files)->
+            @api.update(@id, description, files)
         getComments:()->
             @api.comments(@id)
         getComment:(commentId)->

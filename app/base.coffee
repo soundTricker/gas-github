@@ -24,9 +24,12 @@ do(global=@)->
 
         gists:()=>
             new GistsApi @accessToken
-            
+
         activity:()=>
             new ActivityApi @accessToken
+
+        notifications:()=>
+            new NotificationApi @accessToken
 
     global.Github = Github
 
@@ -70,10 +73,6 @@ do(global=@)->
                 payload? && option.payload = payload
             
             url = baseUrl + endPoint;
-            
-
-                
-
             
             @lastResponse = UrlFetchApp.fetch(url, option)
             return @lastResponse

@@ -33,6 +33,7 @@ do(global=@)->
         userOrgEvents:(userLogin, orgsName, options)->
             req = @request("get", "/users/#{userLogin}/events/orgs/#{orgsName}", if options? options else null)
             return JSON.parse(req.getContentText())
+    global.ActivityApi = ActivityApi
 
 
 

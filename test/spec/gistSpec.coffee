@@ -10,8 +10,11 @@ describe "The GistsApi class", ()->
         usersApi = Github.create(apiKey).users()
         gistsApi = Github.create(apiKey).gists()
         apiBase = new Github.ApiBase apiKey
-        me = usersApi.me()
 
+        @
+
+    it " for test",()->
+        me = usersApi.me()
         @
 
     it 'should has accessToken', ()->
@@ -118,8 +121,30 @@ describe "The GistsApi class", ()->
 
         afterEach ()->
             gistsApi.del(created.id)
-
+            @
         @
+    describe "The 'update' method" , ()->
+        created = null
+        updated = null
+        beforeEach ()->
+            created = gistsApi.create("description" , false, "code.js" : {content : ScriptApp.getResource("gistsSpec").getDataAsString()})
+            updated = gistsApi.update(created.id, "description_update" , {"runner.js" : {content : ScriptApp.getResource("jasmineRunner").getDataAsString() } , "code.js" : {filename:null}})
+            @
+
+        it "should update gists", ()->
+            expect(updated.id).toBe(created.id)
+            expect(updated.description).toBe("description_update")
+            expect(updated.files["code.js"]).toBeUndefined()
+            expect(updated.files["runner.js"]).toBeDefined()
+            expect(updated.files["runner.js"].filename).toBe("runner.js")
+            expect(gistsApi.get(updated.id)).toBeDefined()
+            @
+
+        afterEach ()->
+            gistsApi.del(created.id)
+            @
+        @
+
     describe "The 'setStar' method", ()->
         created = null
         beforeEach ()->
@@ -278,12 +303,8 @@ describe "The GistsApi class", ()->
     describe "The Gist class", ()->
         gist = null
 
-        beforeEach ()->
+        it "for test", ()->
             gist = gistsApi.create("description" , false, "code.js" : {content : ScriptApp.getResource("gistsSpec").getDataAsString()})
-            @
-
-        afterEach ()->
-            gist.del()
             @
 
         it "should has accessToken", ()->
@@ -377,5 +398,8 @@ describe "The GistsApi class", ()->
             it "should add new Comment", ()->
                 expect(gist.getComments().map((c)->c.id)).not.toContain(comment.id)
                 @
+            @
+        it "for test", ()->
+            gist.del()
             @
         @

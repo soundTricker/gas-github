@@ -86,12 +86,11 @@ do(global=@)->
             users = JSON.parse(req.getContentText())
             return (new GithubUser(@accessToken , u) for u in users)
         
-        # Right now(2013/06/15), google apps script does not support 'patch' method, see https://code.google.com/p/google-apps-script-issues/issues/detail?can=2&start=0&num=100&q=urlfetchapp%20patch&colspec=Stars%20Opened%20ID%20Type%20Status%20Summary%20Component%20Owner&groupby=&sort=&id=1224
-        # update:(object)->
-        #     req = @request('patch' ,"/user", object) 
-        #     json = JSON.parse(req.getContentText())
-        #     @[k] = v for k, v of json
-        #     return @
+        update:(object)->
+            req = @request('post' ,"/user", object) 
+            json = JSON.parse(req.getContentText())
+            @[k] = v for k, v of json
+            return @
             
         isFollowing:(userId)->
             req = @request('get' ,"/user/following/#{userId}", null , true) 
@@ -102,9 +101,11 @@ do(global=@)->
             
         addFollow:(userId)->
             req = @request('put' ,"/user/following/#{userId}") 
+            @following++
         
         unFollow:(userId)->
             req = @request('delete' ,"/user/following/#{userId}") 
+            @following--
         
         getKeys:()->
             req = @request('get' ,"/user/keys") 
@@ -118,10 +119,9 @@ do(global=@)->
             req = @request('post' ,"/user/keys/", {title:title,key:key}) 
             return JSON.parse(req.getContentText())
             
-        # Right now(2013/06/15), google apps script does not support 'patch' method, see https://code.google.com/p/google-apps-script-issues/issues/detail?can=2&start=0&num=100&q=urlfetchapp%20patch&colspec=Stars%20Opened%20ID%20Type%20Status%20Summary%20Component%20Owner&groupby=&sort=&id=1224
-        # updateKey:(keyId, title, key)->
-        #     req = @request('patch' ,"/user/keys/#{keyId}", {title:title,key:key}) 
-        #     return JSON.parse(req.getContentText())
+        updateKey:(keyId, title, key)->
+            req = @request('post' ,"/user/keys/#{keyId}", {title:title,key:key}) 
+            return JSON.parse(req.getContentText())
             
         deleteKey:(keyId)->
             req = @request('delete' ,"/user/keys/#{keyId}") 

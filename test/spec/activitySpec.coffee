@@ -18,7 +18,7 @@ describe "The ActivityApi class", ()->
 
         it "should support pagination parameter", ()->
             expect(Array.isArray(api.list( page:2 ))).toBe(true)
-            etag = api.getLastResponse().getHeader().ETag
+            etag = api.getLastResponse().getHeaders().ETag
             expect(Array.isArray(api.list( "header-ETag":etag ))).toBe(true)
             @
         @
